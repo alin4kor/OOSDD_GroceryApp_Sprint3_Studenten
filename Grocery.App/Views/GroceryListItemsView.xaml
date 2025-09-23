@@ -54,7 +54,13 @@
 
         <Border Grid.Row="1" Grid.Column="1" Stroke="#C49B33" StrokeThickness="4" Padding="5" Margin="5" HorizontalOptions="Center">
             <StackLayout>
-                <CollectionView ItemsSource="{Binding AvailableProducts}" Margin="5" WidthRequest="300" HorizontalOptions="Start"
+				<SearchBar Placeholder="Zoek product..."
+						  Text="{Binding SearchText, Mode=TwoWay}"
+						  SearchCommand="{Binding SearchCommand}"
+						  SearchCommandParameter="{Binding Text, Source={RelativeSource Self}}"
+						  Margin="0,0,0,10"/>
+
+				<CollectionView ItemsSource="{Binding FilteredProducts}" Margin="5" WidthRequest="300" HorizontalOptions="Start"
                     SelectionMode="Single"
                     SelectionChangedCommand="{Binding AddProductCommand}"
                     SelectionChangedCommandParameter="{Binding Source={RelativeSource Self}, Path=SelectedItem}">
@@ -76,7 +82,7 @@
                     <CollectionView.EmptyView>
                         <ContentView>
                             <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center">
-                                <Label Text="Er zijn geen producten meer om toe te voegen" FontAttributes="Bold" HorizontalTextAlignment="Center"/>
+                                <Label Text="{Binding EmptyProductsMessage}" FontAttributes="Bold" HorizontalTextAlignment="Center"/>
                             </VerticalStackLayout>
                         </ContentView>
                     </CollectionView.EmptyView>
