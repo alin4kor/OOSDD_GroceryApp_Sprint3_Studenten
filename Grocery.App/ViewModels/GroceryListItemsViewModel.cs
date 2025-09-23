@@ -1,11 +1,12 @@
-﻿using CommunityToolkit.Maui.Alerts;
+﻿using System.Collections.ObjectModel;
+using System.Text.Json;
+using System.Windows.Input;
+using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Grocery.App.Views;
 using Grocery.Core.Interfaces.Services;
 using Grocery.Core.Models;
-using System.Collections.ObjectModel;
-using System.Text.Json;
 
 namespace Grocery.App.ViewModels
 {
@@ -15,9 +16,26 @@ namespace Grocery.App.ViewModels
         private readonly IGroceryListItemsService _groceryListItemsService;
         private readonly IProductService _productService;
         private readonly IFileSaverService _fileSaverService;
+
+
         
         public ObservableCollection<GroceryListItem> MyGroceryListItems { get; set; } = [];
         public ObservableCollection<Product> AvailableProducts { get; set; } = [];
+        public ObservableCollection<Product> FilteredProducts { get; set; } = [];
+
+        private string _searchText;
+        public string SearchText
+        {
+            get => _searchText;
+            set => SetProperty(ref _searchText, value);
+        }
+        public string EmptyProductsMessage =>
+            !AvailableProducts.Any()
+                ? "Er zijn geen producten meer om toe te voegen"
+                : !FilteredProducts.Any()
+                    ? "Er zijn geen producten die aan de zoekopdracht voldoen"
+                    : string.Empty;
+        public ICommand SearchCommand { get; }
 
         [ObservableProperty]
         GroceryList groceryList = new(0, "None", DateOnly.MinValue, "", 0);
@@ -29,6 +47,7 @@ namespace Grocery.App.ViewModels
             _groceryListItemsService = groceryListItemsService;
             _productService = productService;
             _fileSaverService = fileSaverService;
+            SearchCommand = new Command<string>(OnSearch);
             Load(groceryList.Id);
         }
 
@@ -37,6 +56,7 @@ namespace Grocery.App.ViewModels
             MyGroceryListItems.Clear();
             foreach (var item in _groceryListItemsService.GetAllOnGroceryListId(id)) MyGroceryListItems.Add(item);
             GetAvailableProducts();
+            OnSearch(SearchText);
         }
 
         private void GetAvailableProducts()
@@ -85,6 +105,24 @@ namespace Grocery.App.ViewModels
                 await Toast.Make($"Opslaan mislukt: {ex.Message}").Show(cancellationToken);
             }
         }
-
+        private void OnSearch(string query)
+        {
+            if (string.IsNullOrWhiteSpace(query))
+            {
+                FilteredProducts.Clear();
+                foreach (var p in AvailableProducts)
+                {
+                    FilteredProducts.Add(p);
+                }
+            }
+            else
+            {
+                var lower = query.ToLowerInvariant();
+                var result = AvailableProducts.Where(p => p.Name.ToLowerInvariant().Contains(lower));
+                FilteredProducts.Clear();
+                foreach (var p in result)
+                    FilteredProducts.Add(p);
+            }
+        }
     }
 }
