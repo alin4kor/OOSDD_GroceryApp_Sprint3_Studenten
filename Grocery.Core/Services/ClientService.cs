@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Grocery.Core.Helpers;
 
 namespace Grocery.Core.Services
 {
@@ -31,6 +32,21 @@ namespace Grocery.Core.Services
         {
             List<Client> clients = _clientRepository.GetAll();
             return clients;
+        }
+
+        public Client? Add(string email,string rawPassword, string? name = null)
+        {
+            string hash = PasswordHelper.HashPassword(rawPassword);
+            if (Get(email) != null)
+                throw new InvalidOperationException("Dit e-mailadres is al geregistreerd.");
+            var client = new Client(
+                id: 0,
+                name: string.IsNullOrWhiteSpace(name) ? "Anoniem" : name,
+                emailAddress: email,
+                password: hash
+            );
+            _clientRepository.Add(client);
+            return client;
         }
     }
 }

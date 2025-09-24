@@ -18,6 +18,9 @@ namespace Grocery.App.ViewModels
         private string password = "user3";
 
         [ObservableProperty]
+        private string name = "Jan Jetski";
+
+        [ObservableProperty]
         private string loginMessage;
 
         public LoginViewModel(IAuthService authService, GlobalViewModel global)
@@ -39,6 +42,21 @@ namespace Grocery.App.ViewModels
             else
             {
                 LoginMessage = "Ongeldige inloggegevens.";
+            }
+        }
+        [RelayCommand]
+        private void Register()
+        {
+            try
+            {
+                Client newClient = _authService.Register(Email, Password, Name);
+                LoginMessage = $"Gebruiker {newClient.Name} succesvol geregistreerd!";
+                _global.Client = newClient;
+                Application.Current.MainPage = new AppShell();
+            }
+            catch (Exception ex)
+            {
+                LoginMessage = $"Registratie mislukt: {ex.Message}";
             }
         }
     }
