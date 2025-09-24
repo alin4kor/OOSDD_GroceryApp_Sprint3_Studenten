@@ -10,5 +10,11 @@ namespace Grocery.Core.Models
             EmailAddress=emailAddress;
             Password=password;
         }
+        public Client(string? name, string emailAddress, string passwordHash)
+            : base (0, string.IsNullOrWhiteSpace(name) ? "Anoniem" : name) 
+        {
+            EmailAddress = emailAddress;
+            passwordHash = passwordHash;
+        }
     }
 }
