@@ -37,7 +37,7 @@ namespace Grocery.App.ViewModels
             {
                 LoginMessage = $"Welkom {authenticatedClient.Name}!";
                 _global.Client = authenticatedClient;
-                Application.Current.MainPage = new AppShell();
+                Application.Current.MainPage = new AppShell(_global);
             }
             else
             {
@@ -52,7 +52,7 @@ namespace Grocery.App.ViewModels
                 Client newClient = _authService.Register(Email, Password, Name);
                 LoginMessage = $"Gebruiker {newClient.Name} succesvol geregistreerd!";
                 _global.Client = newClient;
-                Application.Current.MainPage = new AppShell();
+                Application.Current.MainPage = new AppShell(_global);
             }
             catch (Exception ex)
             {
