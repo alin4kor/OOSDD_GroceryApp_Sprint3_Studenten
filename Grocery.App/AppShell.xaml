@@ -14,5 +14,8 @@
         <Tab Title="Producten" Icon="products.png">
             <ShellContent Title="Producten" ContentTemplate="{DataTemplate local:ProductView}" />
         </Tab>
+        <Tab Title="Uitloggen">
+            <ShellContent Title="Uitloggen" ContentTemplate="{DataTemplate local:OutloginView}" />
+        </Tab>
     </TabBar>
 </Shell>

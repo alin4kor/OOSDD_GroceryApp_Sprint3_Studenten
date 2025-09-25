@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Grocery.App.Views.OutloginView"
+             xmlns:vm="clr-namespace:Grocery.App.ViewModels"
+             xmlns:m="clr-namespace:Grocery.Core.Models;assembly=Grocery.Core"
+             Title="OutloginView">
+    <Shell.TitleView>
+        <Grid>
+            <Label Text="Uitloggen" FontSize="Large" HorizontalOptions="Center" VerticalOptions="Center" />
+        </Grid>
+    </Shell.TitleView>
+
+    <Border Stroke="#C49B33"
+        StrokeThickness="4"
+        Padding="10"
+        Margin="10"
+        HorizontalOptions="Center">
+        <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="20">
+            <Label Text="Weet u zeker dat u wilt uitloggen?" HorizontalOptions="Center" />
+            <Button Text="Uitloggen" HorizontalOptions="Center" Clicked="OnLogoutClicked" />
+        </VerticalStackLayout>
+    </Border>
+</ContentPage>

@@ -38,9 +38,17 @@ namespace Grocery.App
             builder.Services.AddSingleton<IProductRepository, ProductRepository>();
             builder.Services.AddSingleton<IClientRepository, ClientRepository>();
             builder.Services.AddSingleton<GlobalViewModel>();
+            builder.Services.AddSingleton<AppShell>();
 
-            builder.Services.AddTransient<GroceryListsView>().AddTransient<GroceryListViewModel>();
-            builder.Services.AddTransient<GroceryListItemsView>().AddTransient<GroceryListItemsViewModel>();
+            builder.Services.AddTransient<GroceryListsView>();
+            builder.Services.AddTransient<GroceryListViewModel>();
+
+            builder.Services.AddTransient<GroceryListItemsView>();
+            builder.Services.AddTransient<GroceryListItemsViewModel>();
+
+            builder.Services.AddTransient<OutloginView>();
+            builder.Services.AddTransient<OutloginViewModel>();
+
             builder.Services.AddTransient<ProductView>().AddTransient<ProductViewModel>();
             builder.Services.AddTransient<ChangeColorView>().AddTransient<ChangeColorViewModel>();
             builder.Services.AddTransient<LoginView>().AddTransient<LoginViewModel>();
